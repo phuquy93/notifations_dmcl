@@ -1,0 +1,16 @@
+demo/
+vendor/
+node_modules/
+upload/
+images/
+block/
+img/
+data/
+fonts/
+# public/
+
+.DS_Store
+*.less
+*.svg
+*.zip
+.DS_Store
