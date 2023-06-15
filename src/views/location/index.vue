@@ -125,38 +125,6 @@ export default {
       return this.$store.state.user.token;
     },
   },
-  methods: {
-    handleSend() {
-      let token = this.token;
-      let index = token.find((o) => o == this.store);
-      if (!index) {
-        token = [...token, this.store];
-      }
-      // fetch(
-      //   "https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/" + token,
-      //   {
-      //     method: "POST",
-      //     headers: new Headers({
-      //       Authorization: "key=" + fcm_server_key,
-      //     }),
-      //   }
-      // )
-      //   .then((response) => {
-      //     if (response.status < 200 || response.status >= 400) {
-      //       throw (
-      //         "Error subscribing to topic: " +
-      //         response.status +
-      //         " - " +
-      //         response.text()
-      //       );
-      //     }
-      //     console.log('Subscribed to "' + token + '"');
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
-    },
-  },
 };
 </script>
 

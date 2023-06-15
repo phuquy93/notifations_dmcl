@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { login, getInfo, getUsers, addUsers } from '@/api/user'
+import { getInfo, getUsers, addUsers } from '@/api/user'
 import { getUser, getToken, setToken, setName, removeToken, removeUser, setStore, removeStore, getStore, removeDk } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -21,22 +21,23 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
+  async login({ commit }, userInfo) {
     const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        if (data.data.is_notice) {
-          setToken(data.data.group_notice)
-          setName(data.data.name)
-          setStore(data.data.store)
-        }
+    const options = {
+      method: "GET",
+    };
+    let res = await fetch(
+      "https://apiat.stdmcl.com:12443/api/v1/loginuser?username=" + username.trim() + "&password=" + password,
+      options
+    )
+    const data = await res.json();
 
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+    if (data.data.is_notice) {
+      setToken(data.data.group_notice)
+      setName(data.data.name)
+      setStore(data.data.store)
+    }
+    return data;
   },
 
   // get user info

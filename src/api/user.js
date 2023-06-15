@@ -1,13 +1,27 @@
 import request from '@/utils/request'
 
-let domain = "https://apiat.stdmcl.com:11443/api/v1"
+let domain = "https://apiat.stdmcl.com:12443/api/v1"
 
-export function login(data) {
-  return request({
-    url: domain + '/loginuser',
-    method: 'post',
-    data
-  })
+export async function login(data) {
+
+
+  const options = {
+    method: "GET",
+  };
+
+  let res = await fetch(
+    domain + "/loginuser?username=" + data.username + "&password=" + data.password,
+    options
+  ).then((res) => res.json());
+
+
+  return res;
+
+  // return request({
+  //   url: 'https://apiat.stdmcl.com:12443/api/v1/loginuser?username=EM1000005628&password=123.654',
+  //   method: 'get',
+
+  // })
 }
 
 export function getInfo(data) {

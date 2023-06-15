@@ -49,6 +49,7 @@
 
 <script>
 import { Message } from "element-ui";
+
 export default {
   name: "View-login",
   data() {
@@ -87,14 +88,23 @@ export default {
 
           this.$store
             .dispatch("user/login", this.ruleForm)
-            .then(() => {
+            .then((res) => {
+              if (!res.data.is_notice) {
+                Message({
+                  message: "User này chưa có quyền nhận tin nhắn!!",
+                  type: "error",
+                  duration: 5 * 1000,
+                });
+                this.loading = false;
+                return false;
+              }
               window.location.href = "/location";
               // this.$router.push({ path: this.redirect || "/location" });
               this.loading = false;
             })
-            .catch((err) => {
+            .catch(() => {
               Message({
-                message: err.response.data.message,
+                message: "Tên đăng nhập hoặc mật khẩu không đúng!!",
                 type: "error",
                 duration: 5 * 1000,
               });
