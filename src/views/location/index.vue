@@ -38,11 +38,11 @@
       </el-table-column>
 
       <el-table-column prop="title" label="Tiêu đề" />
-      <el-table-column prop="toId" label="Chi nhánh" />
-      <el-table-column prop="fromId" label="Tên chi nhánh" />
-      <el-table-column prop="created_at" label="Ngày gửi">
+      <el-table-column prop="toId" label="Nhóm nhận tin" />
+      <el-table-column prop="fromId" label="Tên người gửi" />
+      <el-table-column prop="created_at" label="Time">
         <template #default="{ row }">
-          {{ new Date(row.created_at).toLocaleString("en-IN") }}
+          {{ row.readable_updated_at }}
         </template>
       </el-table-column>
     </el-table>
@@ -91,7 +91,7 @@
       </el-row>
       <el-row style="margin-bottom: 30px">
         <el-col :span="7"><strong>Đã gửi</strong></el-col>
-        <el-col :span="17">{{ detail.readable_created_at }}</el-col>
+        <el-col :span="17">{{ detail.readable_updated_at }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="7">Nội dung</el-col>
@@ -142,7 +142,7 @@ getToken(messaging, {
     if (currentToken) {
       console.log("Token started: " + currentToken);
       localStorage.setItem("tokenNoti", currentToken);
-      if (!statusDk && statusDk == null) {
+      if (statusDk == 1) {
         dangky(currentToken);
       }
     } else {
@@ -184,7 +184,7 @@ function actiondangky(token) {
         );
       }
       console.log('Subscribed to "' + datamew[index] + '"');
-      localStorage.setItem("vue_admin_status_dk", true);
+      localStorage.setItem("vue_admin_status_dk", 2);
       index++;
       dangky(token);
     })

@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { getInfo, getUsers, addUsers } from '@/api/user'
-import { getUser, getToken, setNotice, setToken, setName, removeToken, removeTokenUser, removeUser, setStore, removeStore, getStore, removeDk } from '@/utils/auth'
+
+import { getUser, getToken, setStatusDk, setNotice, setToken, setName, removeToken, removeUser, setStore, removeStore, getStore, removeDk } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -23,6 +23,7 @@ const actions = {
   // user login
   async login({ commit }, userInfo) {
     const { username, password } = userInfo
+
     const options = {
       method: "GET",
     };
@@ -33,12 +34,22 @@ const actions = {
     const data = await res.json();
 
     if (data.data.is_notice) {
+
       setToken(data.data.token)
+
       setNotice(data.data.group_notice)
+
       setName(data.data.name)
+
       setStore(data.data.store)
+
+      setStatusDk(1)
+
+
     }
+
     return data;
+
   },
 
   // get user info
@@ -60,12 +71,12 @@ const actions = {
 
   // user logout
   logout({ commit }) {
-    removeTokenUser()
     removeToken() // must remove  token  first
     removeUser()
     removeStore()
     resetRouter()
     removeDk()
+    
     commit('RESET_STATE')
   },
 

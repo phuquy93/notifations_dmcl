@@ -89,6 +89,7 @@ export default {
           this.$store
             .dispatch("user/login", this.ruleForm)
             .then((res) => {
+              console.log(res);
               if (!res.data.is_notice) {
                 Message({
                   message: "User này chưa có quyền nhận tin nhắn!!",

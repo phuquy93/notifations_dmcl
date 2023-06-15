@@ -27,6 +27,11 @@ export function setNotice(token) {
     return localStorage.setItem(TokenKey, token)
 }
 
+export function setStatusDk(status) {
+
+    return localStorage.setItem(TokenDK, status)
+}
+
 export function setToken(token) {
 
     return localStorage.setItem(TokenKeyUser, token)
