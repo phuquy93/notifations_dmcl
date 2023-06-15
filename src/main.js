@@ -10,13 +10,18 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-import MyPagination from "@/components/Pagination"
-Vue.component('MyPagination', MyPagination)
+import VuePagination from "vuejs-paginate";
+Vue.component("VuePagination", VuePagination);
+
 require("@/style/main.scss")
 
 import '@/permission'
 
 Vue.use(ElementUI, { locale })
+
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+Vue.use(Toast);
 
 Vue.config.productionTip = false
 

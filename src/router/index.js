@@ -23,19 +23,19 @@ export const constantRoutes = [
         path: '/location',
         component: Layout,
         name: 'Location',
-        meta: { title: 'Vị trí user', icon: 'el-icon-location' },
+        meta: { title: 'Danh sách thông báo', icon: 'el-icon-location' },
         children: [
             {
                 path: '/location',
                 name: 'Location',
                 component: () => import('@/views/location'),
                 meta: {
-                    title: 'Vị trí user'
+                    title: 'Danh sách thông báo'
                 }
             },
         ]
     },
-    { path: '*', redirect: '/404', hidden: true }
+    { path: '*', redirect: '/location', hidden: true }
 ]
 
 const createRouter = () => new Router({

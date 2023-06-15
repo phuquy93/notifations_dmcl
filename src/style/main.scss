@@ -114,3 +114,30 @@ body {
         width: 100%;
     }
 }
+
+.pagination {
+    display: flex;
+    margin-top: 20px;
+}
+
+.pagination li {
+
+    list-style-type: none;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.pagination li.active {
+    background-color: #6993ff;
+    color: #fff;
+}
+
+.pagination li a {
+    font-weight: 400;
+    padding: 10px;
+    display: inline-block;
+}
+
+.pagination li.disabled a {
+    opacity: .4;
+}

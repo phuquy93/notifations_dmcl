@@ -1,4 +1,7 @@
 const TokenKey = 'vue_admin_token'
+
+const TokenKeyUser = 'vue_admin_token_user'
+
 const TokenKeyName = 'vue_admin_name'
 
 const TokenStore = 'vue_admin_store'
@@ -15,10 +18,18 @@ export function getUser() {
 export function getStore() {
     return localStorage.getItem(TokenStore)
 }
+export function getTokenUser() {
+    return localStorage.getItem(TokenKeyUser)
+}
+
+export function setNotice(token) {
+
+    return localStorage.setItem(TokenKey, token)
+}
 
 export function setToken(token) {
 
-    return localStorage.setItem(TokenKey, token)
+    return localStorage.setItem(TokenKeyUser, token)
 }
 
 
@@ -29,6 +40,10 @@ export function setName(token) {
 
 export function removeToken() {
     return localStorage.removeItem(TokenKey)
+}
+
+export function removeTokenUser() {
+    return localStorage.removeItem(TokenKeyUser)
 }
 
 export function removeUser() {

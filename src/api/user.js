@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-let domain = "https://apiat.stdmcl.com:12443/api/v1"
+let domain = "https://apiat.stdmcl.com:11443/api/v1"
 
 export async function login(data) {
 
