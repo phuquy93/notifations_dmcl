@@ -28,7 +28,7 @@ const actions = {
       method: "GET",
     };
     let res = await fetch(
-      "https://apiat.stdmcl.com:12443/api/v1/loginuser?username=" + username.trim() + "&password=" + password,
+      "https://apiat.stdmcl.com:11443/api/v1/loginuser?username=" + username.trim() + "&password=" + password,
       options
     )
     const data = await res.json();
@@ -76,7 +76,7 @@ const actions = {
     removeStore()
     resetRouter()
     removeDk()
-    
+
     commit('RESET_STATE')
   },
 

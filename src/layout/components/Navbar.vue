@@ -15,7 +15,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
-            src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+            src="/f778738c-e4f8-4870-b634-56703b4acafe.gif"
             class="user-avatar"
           />
           <i class="el-icon-caret-bottom" />

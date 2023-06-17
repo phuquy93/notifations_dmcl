@@ -20,7 +20,21 @@
             type="button"
             class="el-button el-button--primary el-button--mini"
             @click="handleSearch"
+            style="position: relative"
           >
+            <span
+              id="token_status"
+              style="
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background-color: red;
+                display: inline-block;
+                position: absolute;
+                top: 2px;
+                left: 2px;
+              "
+            ></span>
             <i class="el-icon-search"></i><span>Tìm</span>
           </button>
         </div>
@@ -29,11 +43,16 @@
     <el-table :data="lists" border style="width: 100%" v-loading="loading">
       <el-table-column label="ID">
         <template #default="{ row }">
-          <strong
-            style="color: #03a9f4; cursor: pointer"
-            @click="handleDetail(row)"
-            >{{ row.id }}</strong
-          >
+          <strong style="color: #03a9f4; cursor: pointer">{{ row.id }}</strong>
+          <div>
+            <button
+              type="button"
+              class="el-button el-button--primary el-button--mini"
+              @click="handleDetail(row)"
+            >
+              Chi tiết
+            </button>
+          </div>
         </template>
       </el-table-column>
 
@@ -142,6 +161,7 @@ getToken(messaging, {
     if (currentToken) {
       console.log("Token started: " + currentToken);
       localStorage.setItem("tokenNoti", currentToken);
+      document.getElementById("token_status").style.backgroundColor = "green";
       if (statusDk == 1) {
         dangky(currentToken);
       }

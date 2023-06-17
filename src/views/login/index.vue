@@ -40,7 +40,7 @@
       <div
         class="login100-more"
         style="
-          background-image: url('https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?t=st=1686384874~exp=1686385474~hmac=97a351d84b3dafece1b9654d10fd00238b6cd2391def6c748fbdc5c594142762');
+          background-image: url('/mobile-login-concept-illustration_114360-83.avif');
         "
       ></div>
     </div>
