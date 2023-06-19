@@ -1,5 +1,8 @@
 <template>
   <div>
+    <p style="font-size: 12px; margin-bottom: 5px; color: red">
+      <strong id="token_status">Hệ thống chưa sẵn sàng</strong>
+    </p>
     <form class="el-form ad-form-query el-form--inline">
       <div class="el-form-item el-form-item--mini">
         <div class="el-form-item__content">
@@ -49,19 +52,6 @@
             @click="handleSearch"
             style="position: relative"
           >
-            <span
-              id="token_status"
-              style="
-                width: 5px;
-                height: 5px;
-                border-radius: 50%;
-                background-color: red;
-                display: inline-block;
-                position: absolute;
-                top: 2px;
-                left: 2px;
-              "
-            ></span>
             <i class="el-icon-search"></i><span>Tìm</span>
           </button>
         </div>
@@ -204,7 +194,9 @@ getToken(messaging, {
     if (currentToken) {
       console.log("Token started: " + currentToken);
       localStorage.setItem("tokenNoti", currentToken);
-      document.getElementById("token_status").style.backgroundColor = "green";
+      document.getElementById("token_status").innerText =
+        "Hệ thống đã sẵn sàng";
+      document.getElementById("token_status").style.color = "green";
       if (statusDk == 1) {
         dangky(currentToken);
       }
