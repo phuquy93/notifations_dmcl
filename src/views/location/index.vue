@@ -40,6 +40,7 @@
           </div>
         </div>
       </div>
+
       <div class="el-form-item el-form-item--mini">
         <div class="el-form-item__content">
           <button
@@ -66,6 +67,9 @@
         </div>
       </div>
     </form>
+    <p style="font-size: 14px; margin-bottom: 5px">
+      <Strong>Tổng: {{ inforpage ? inforpage.total : 0 }}</Strong>
+    </p>
     <el-table :data="lists" border style="width: 100%" v-loading="loading">
       <el-table-column label="ID">
         <template #default="{ row }">
