@@ -13,6 +13,32 @@
             />
           </div>
         </div>
+        <div class="el-form-item__content" style="margin-left: 10px">
+          <div class="el-input el-input--mini">
+            <el-select placeholder="Tùy chọn" v-model="status">
+              <el-option label="Chưa xem" :value="0"></el-option>
+              <el-option label="Đã xem" :value="1"></el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="el-form-item__content" style="margin-left: 10px">
+          <div class="el-input el-input--mini">
+            <el-date-picker
+              type="date"
+              placeholder="Từ ngày"
+              v-model="date_start"
+            ></el-date-picker>
+          </div>
+        </div>
+        <div class="el-form-item__content" style="margin-left: 10px">
+          <div class="el-input el-input--mini">
+            <el-date-picker
+              type="date"
+              placeholder="Đến ngày"
+              v-model="date_end"
+            ></el-date-picker>
+          </div>
+        </div>
       </div>
       <div class="el-form-item el-form-item--mini">
         <div class="el-form-item__content">
@@ -117,7 +143,20 @@
         <el-col :span="17">{{ detail.content }}</el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Đóng</el-button>
+        <el-button
+          :loading="loading"
+          class="el-button el-button--primary"
+          v-if="
+            detail.toId.search('_thunganchinhanh') > -1 &&
+            detail.status == 0 &&
+            show_checked
+          "
+          @click="handleChecked(detail.id)"
+          >Đã xem</el-button
+        >
+        <el-button @click="dialogVisible = false" :loading="loading"
+          >Đóng</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -224,11 +263,21 @@ export default {
       title: "",
       dialogVisible: false,
       detail: null,
+      status: 0,
+      date_start: new Date(new Date().setDate(new Date().getDate() - 2)),
+      date_end: new Date(),
+      show_checked: true,
     };
   },
   created() {
     this.$store
-      .dispatch("noti/getList", { page: 1, title: this.title })
+      .dispatch("noti/getList", {
+        page: 1,
+        title: this.title,
+        status: this.status,
+        date_start: this.date_start,
+        date_end: this.date_end,
+      })
       .then((res) => {
         this.lists = res.data;
         this.inforpage = res.meta.pagination;
@@ -254,10 +303,44 @@ export default {
     handleSearch() {
       this.handleCurrentChange(1);
     },
+    handleChecked(id) {
+      this.loading = true;
+      this.$store
+        .dispatch("noti/handleChecked", {
+          id: id,
+          cid_user: window.localStorage.getItem("vue_admin_name"),
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.loading = false;
+            this.show_checked = false;
+          } else {
+            Message({
+              message: "Cập nhật thất bại!!",
+              type: "error",
+              duration: 5 * 1000,
+            });
+            this.loading = false;
+          }
+        })
+        .catch(() => {
+          Message({
+            message: "Không thể kết nối đến serve!!",
+            type: "error",
+            duration: 5 * 1000,
+          });
+        });
+    },
     handleCurrentChange(e) {
       this.loading = true;
       this.$store
-        .dispatch("noti/getList", { page: e, title: this.title })
+        .dispatch("noti/getList", {
+          page: e,
+          title: this.title,
+          status: this.status,
+          date_start: this.date_start,
+          date_end: this.date_end,
+        })
         .then((res) => {
           this.lists = res.data;
           this.page = e;
