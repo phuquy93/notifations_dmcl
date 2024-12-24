@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { getUser, getToken, setNotice, getTime, setToken, setName, removeToken, removeUser, setStore, removeStore, getStore } from '@/utils/auth'
+import { getUser, getToken, setStatusDk, setNotice, setToken, setName, removeToken, removeUser, setStore, removeStore, getStore, removeDk } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -43,7 +43,8 @@ const actions = {
 
       setStore(data.data.store)
 
-      getTime(Date.now())
+      setStatusDk(1)
+
 
     }
 
@@ -74,6 +75,7 @@ const actions = {
     removeUser()
     removeStore()
     resetRouter()
+    removeDk()
 
     commit('RESET_STATE')
   },

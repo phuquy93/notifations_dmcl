@@ -6,7 +6,8 @@ const TokenKeyName = 'vue_admin_name'
 
 const TokenStore = 'vue_admin_store'
 
-const TokenTime = 'vue_admin_time'
+const TokenDK = 'vue_admin_status_dk'
+
 
 export function getToken() {
     return localStorage.getItem(TokenKey)
@@ -26,9 +27,9 @@ export function setNotice(token) {
     return localStorage.setItem(TokenKey, token)
 }
 
-export function getTime(token) {
+export function setStatusDk(status) {
 
-    return localStorage.getItem(TokenTime, token)
+    return localStorage.setItem(TokenDK, status)
 }
 
 export function setToken(token) {
@@ -36,10 +37,6 @@ export function setToken(token) {
     return localStorage.setItem(TokenKeyUser, token)
 }
 
-export function setTime(token) {
-
-    return localStorage.setItem(TokenTime, token)
-}
 
 export function setName(token) {
 
@@ -66,3 +63,7 @@ export function removeStore() {
     return localStorage.removeItem(TokenStore)
 }
 
+
+export function removeDk() {
+    return localStorage.removeItem(TokenDK)
+}

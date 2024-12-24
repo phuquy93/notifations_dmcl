@@ -28,7 +28,7 @@ export const constantRoutes = [
             {
                 path: '/location',
                 name: 'Location',
-                component: () => import('@/views/location'),
+                component: () => import('@/views/location/index_bk.vue'),
                 meta: {
                     title: 'Danh sách thông báo'
                 }

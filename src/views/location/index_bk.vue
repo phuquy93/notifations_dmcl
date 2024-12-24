@@ -1,27 +1,8 @@
 <template>
   <div>
-    <div
-      style="
-        font-size: 14px;
-        color: green;
-        margin-bottom: 10px;
-        font-weight: bold;
-      "
-      v-if="statusText"
-    >
-      Hệ thống đã sẵn sàng
-    </div>
-    <div
-      style="
-        font-size: 14px;
-        color: red;
-        margin-bottom: 10px;
-        font-weight: bold;
-      "
-      v-else
-    >
-      Hệ thống chưa sẵn sàng
-    </div>
+    <p style="font-size: 12px; margin-bottom: 5px; color: red">
+      <strong id="token_status">Hệ thống chưa sẵn sàng</strong>
+    </p>
     <form class="el-form ad-form-query el-form--inline">
       <div class="el-form-item el-form-item--mini">
         <div class="el-form-item__content">
@@ -176,9 +157,110 @@
 </template>
 
 <script>
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { Message } from "element-ui";
-import io from "socket.io-client";
-import { getUser, getToken, getTime, getStore } from "@/utils/auth";
+import Toast from "../../utils/toast";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBybXVFqAgaUaVQFAzmMURY2Vr8chUmDPw",
+  appId: "1:338654189304:web:06207aa1b23282f4c9cd0d",
+  messagingSenderId: "338654189304",
+  projectId: "dmclmobileapp",
+  authDomain: "dmclmobileapp.firebaseapp.com",
+  databaseURL: "https://dmclmobileapp.firebaseio.com",
+  storageBucket: "dmclmobileapp.appspot.com",
+  measurementId: "G-LG7B1Q7LJ4",
+};
+// eslint-disable-next-line
+const app = initializeApp(firebaseConfig);
+// let statusDk = localStorage.getItem("vue_admin_status_dk");
+let datamew = localStorage.getItem("vue_admin_token").split(",");
+let index = 0;
+datamew = [...datamew, "all"];
+
+const messaging = getMessaging();
+
+onMessage(messaging, (payload) => {
+  Toast.success(JSON.stringify(payload));
+  console.log("Message received. ", payload);
+});
+
+getToken(messaging, {
+  vapidKey:
+    "BMaESjdyXISGbQmjrtM5MqXOYRPgHh__zCrXYDylQiGdKcweWkaP4WbzPK8f9tAIfVVJPXRLevThyWV9x2-bV2Q",
+})
+  .then((currentToken) => {
+    if (currentToken) {
+      console.log("Token started: " + currentToken);
+      localStorage.setItem("tokenNoti", currentToken);
+      document.getElementById("token_status").innerText =
+        "Hệ thống đã sẵn sàng";
+      document.getElementById("token_status").style.color = "green";
+      dangky(currentToken);
+    } else {
+      // Show permission request UI
+      console.log(
+        "No registration token available. Request permission to generate one."
+      );
+    }
+  })
+  .catch((err) => {
+    console.log("An error occurred while retrieving token. ", err);
+  });
+function dangky(token) {
+  if (index < datamew.length) {
+    actiondangky(token);
+  }
+}
+function actiondangky(token) {
+  fetch("https://apiat.stdmcl.com:11443/api/v1/notice/addtopicgroup", {
+    method: "post",
+    body: JSON.stringify({
+      tokens: token,
+      topic: datamew[index],
+    }),
+  })
+    .then((response) => response.json())
+    .then(() => {
+      index++;
+      dangky(token);
+    })
+    .catch(() => {
+      index++;
+      dangky(token);
+    });
+  // fetch(
+  //   "https://iid.googleapis.com/iid/v1/" +
+  //     token +
+  //     "/rel/topics/" +
+  //     datamew[index],
+  //   {
+  //     method: "POST",
+  //     headers: new Headers({
+  //       Authorization:
+  //         "key=AAAATtlc1vg:APA91bEkJBDCwl08yElFgZcJJd9BC-ZYcWi-NO55LThSv0Io4WKtm_sTE0kxQ4ySj2E7Oj1_UN0R7WuAkYNtffjX3oXqYuMeq17Ujyin1xVtZ5QJKgEEjuETTldTfZ4JwIp6znrUmLu9",
+  //     }),
+  //   }
+  // )
+  //   .then((response) => {
+  //     if (response.status < 200 || response.status >= 400) {
+  //       throw (
+  //         "Error subscribing to topic: " +
+  //         response.status +
+  //         " - " +
+  //         response.text()
+  //       );
+  //     }
+  //     console.log('Subscribed to "' + datamew[index] + '"');
+  //     // localStorage.setItem("vue_admin_status_dk", 2);
+  //     index++;
+  //     dangky(token);
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
+}
 
 export default {
   name: "View-so-immediate",
@@ -195,13 +277,6 @@ export default {
       date_start: new Date(new Date().setDate(new Date().getDate() - 2)),
       date_end: new Date(),
       show_checked: true,
-
-      config_socket: {
-        socket: null,
-        url_socket: "http://localhost:3000",
-      },
-
-      statusText: false,
     };
   },
   created() {
@@ -226,43 +301,12 @@ export default {
         });
       });
   },
-  mounted() {
-    if (Notification.permission !== "denied") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          this.statusText = true;
-          this.config_socket.socket = io(this.config_socket.url_socket);
-
-          var user = {
-            user_id: null,
-            name_user: getUser("vue_admin_name"),
-            store: getStore("vue_admin_store"),
-            time_login: getTime("vue_admin_time"),
-            group: getToken("vue_admin_token").split(","),
-          };
-
-          this.config_socket.socket.emit("user_connected", user);
-
-          this.config_socket.socket.on("send-notifi", (data) => {
-            var { title, message } = data;
-            // eslint-disable-next-line
-            var notifi = new Notification(title, { body: message });
-
-            notifi.onclick = (event) => {
-              event.preventDefault(); // prevent the browser from focusing the Notification's tab
-              window.open(
-                "https://notification.stdmcl.com:11443/location",
-                "_blank"
-              );
-            };
-          });
-        }
-      });
-    }
-  },
   computed: {
     store() {
       return this.$store.state.user.store;
+    },
+    token() {
+      return this.$store.state.user.token;
     },
   },
   methods: {

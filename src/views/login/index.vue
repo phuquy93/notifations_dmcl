@@ -1,4 +1,4 @@
-<template>
+x`<template>
   <div class="container-login100">
     <div class="wrap-login100">
       <el-form
@@ -89,7 +89,6 @@ export default {
           this.$store
             .dispatch("user/login", this.ruleForm)
             .then((res) => {
-              console.log(res);
               if (!res.data.is_notice) {
                 Message({
                   message: "User này chưa có quyền nhận tin nhắn!!",

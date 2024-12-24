@@ -78,44 +78,71 @@ export default {
       }
     },
     actiondangky(token) {
-      fetch(
-        "https://iid.googleapis.com/iid/v1/" +
-          token +
-          "/rel/topics/" +
-          this.datamew[this.index],
-        {
-          method: "DELETE",
-          headers: new Headers({
-            Authorization:
-              "key=AAAATtlc1vg:APA91bEkJBDCwl08yElFgZcJJd9BC-ZYcWi-NO55LThSv0Io4WKtm_sTE0kxQ4ySj2E7Oj1_UN0R7WuAkYNtffjX3oXqYuMeq17Ujyin1xVtZ5QJKgEEjuETTldTfZ4JwIp6znrUmLu9",
-          }),
-        }
-      )
-        .then((response) => {
-          if (response.status < 200 || response.status >= 400) {
-            throw (
-              "Error subscribing to topic: " +
-              response.status +
-              " - " +
-              response.text()
-            );
-          }
-          console.log('Subscribed to "' + this.datamew[this.index] + '"');
-          localStorage.setItem("vue_admin_status_dk", true);
+      fetch("https://apiat.stdmcl.com:11443/api/v1/notice/removetopicgroup", {
+        method: "post",
+        body: JSON.stringify({
+          tokens: token,
+          topic: this.datamew[this.index],
+        }),
+      })
+        .then((response) => response.json())
+        .then(() => {
           this.index = this.index + 1;
           this.dangky(token);
-
           if (this.index == this.datamew.length) {
             this.loading = false;
             this.$store.dispatch("user/logout").then(() => {
               window.location.href = `/login?redirect=${this.$route.fullPath}`;
-              // this.$router.push(`/login?redirect=${this.$route.fullPath}`);
             });
           }
         })
-        .catch((error) => {
-          console.error(error);
+        .catch(() => {
+          this.index = this.index + 1;
+          this.dangky(token);
+          if (this.index == this.datamew.length) {
+            this.loading = false;
+            this.$store.dispatch("user/logout").then(() => {
+              window.location.href = `/login?redirect=${this.$route.fullPath}`;
+            });
+          }
         });
+      // fetch(
+      //   "https://iid.googleapis.com/iid/v1/" +
+      //     token +
+      //     "/rel/topics/" +
+      //     this.datamew[this.index],
+      //   {
+      //     method: "DELETE",
+      //     headers: new Headers({
+      //       Authorization:
+      //         "key=AAAATtlc1vg:APA91bEkJBDCwl08yElFgZcJJd9BC-ZYcWi-NO55LThSv0Io4WKtm_sTE0kxQ4ySj2E7Oj1_UN0R7WuAkYNtffjX3oXqYuMeq17Ujyin1xVtZ5QJKgEEjuETTldTfZ4JwIp6znrUmLu9",
+      //     }),
+      //   }
+      // )
+      //   .then((response) => {
+      //     if (response.status < 200 || response.status >= 400) {
+      //       throw (
+      //         "Error subscribing to topic: " +
+      //         response.status +
+      //         " - " +
+      //         response.text()
+      //       );
+      //     }
+      //     console.log('Subscribed to "' + this.datamew[this.index] + '"');
+      //     localStorage.setItem("vue_admin_status_dk", true);
+      //     this.index = this.index + 1;
+      //     this.dangky(token);
+      //     if (this.index == this.datamew.length) {
+      //       this.loading = false;
+      //       this.$store.dispatch("user/logout").then(() => {
+      //         window.location.href = `/login?redirect=${this.$route.fullPath}`;
+      //         // this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+      //       });
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
     },
   },
 };
